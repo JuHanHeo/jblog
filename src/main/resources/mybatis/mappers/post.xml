@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+	<insert id="insert" parameterType="Map">
+		<![CDATA[
+		insert into post values(null,(select no from category where user_no = #{no} and name = #{category}) ,#{title}, #{content}, now())
+		]]>
+	</insert>
+	
+	<select id="getList" parameterType="Map" resultType="postvo">
+		<![CDATA[
+		select no, category_no "categoryNo", title, content, DATE_FORMAT(reg_date,'%Y-%m-%d') "regDate"
+		from post
+		where category_no in (select no 
+					  		  from category 
+                      		  where user_no =(select no from user 
+                      		  				  where id=#{userId})
+                      		  and name like #{category}
+                      		  )
+		]]>
+	</select>
+	<select id="getListByCate" parameterType="Map" resultType="postvo">
+		<![CDATA[
+		select no, category_no "categoryNo", title, content, DATE_FORMAT(reg_date,'%Y-%m-%d') "regDate"
+		from post
+		where category_no in (select no 
+					  		  from category 
+                      		  where user_no =(select no from user 
+                      		  				  where id=#{userId})
+                      		  and name = #{category}
+                      		  )
+		]]>
+	</select>
+	<select id="getPostByNo" parameterType="int" resultType="postvo">
+		<![CDATA[
+		select no, category_no "categoryNo", title, content, DATE_FORMAT(reg_date,'%Y-%m-%d') "regDate"
+		from post
+		where no = #{no}
+		]]>
+	</select>
+		
+	<select id="groupCount" resultType="postvo">
+		<![CDATA[
+		select category_no categoryNo, count(*) cnt
+		from post
+		group by 1
+		]]>
+	</select>
+
+</mapper>

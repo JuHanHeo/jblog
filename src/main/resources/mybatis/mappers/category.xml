@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category">
+
+	<select id="getList" resultType="categoryvo" parameterType="categoryvo">
+		<![CDATA[
+		select no , name , description, reg_date "date"
+		from category
+		where user_no = (select no from user where id = #{userId})
+		]]>
+	</select>
+	
+	<select id="getAdminList" resultType="categoryvo" parameterType="int">
+		<![CDATA[
+		select c.no, c.name, count(title) cnt, c.description
+		from category c left outer join post p on c.no=p.category_no 
+		where user_no=#{userNo}
+		group by 1
+		]]>
+	</select>
+	
+	<insert id="init">
+		<![CDATA[
+		insert into category values(null, (select last_insert_id()), '미분류', '미분류', now());
+		]]>
+	</insert>
+	
+	<insert id="insert" parameterType="categoryvo">
+		<![CDATA[
+		insert into category values(null, #{no}, #{name}, #{description}, now());
+		]]>
+	</insert>
+	
+	<select id="getCount">
+		<![CDATA[
+		select category_no, count(*)
+		from post
+		where category_no=4
+		group by 1;
+		]]>
+	</select>
+
+
+</mapper>

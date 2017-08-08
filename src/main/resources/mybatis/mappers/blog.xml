@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">
+
+	<insert id="insert">
+		<![CDATA[
+		insert into blog values((select last_insert_id()), '타이틀을 입력하세요', '로고')
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="blogvo">
+		<![CDATA[
+		update blog set title = #{title} 
+		]]>
+		
+		<if test="logo!=null">
+		<![CDATA[
+		, logo=#{logo}
+		]]>
+		</if>
+		<![CDATA[
+		where user_no = #{userNo}
+		]]>
+	</update>
+	
+	<select id="get" parameterType="int" resultType="blogvo">
+		<![CDATA[
+		select user_no, title, logo
+		from blog
+		where user_no = #{no}
+		]]>
+	</select>
+	
+	<select id="getById" parameterType="String" resultType="blogvo">
+		<![CDATA[
+		select user_no, title, logo
+		from blog
+		where user_no = (select no from user where id = #{userId})
+		]]>
+	</select>
+
+</mapper>

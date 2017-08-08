@@ -11,14 +11,8 @@
 </head>
 <body>
 	<div class="center-content">
-		<h1 class="logo">JBlog</h1>
-		<ul class="menu">
-			<li><a href="">로그인</a></li>
-			<li><a href="">회원가입</a></li>
-			<li><a href="">로그아웃</a></li>
-			<li><a href="">내블로그</a></li>
-		</ul>
-		<form class="join-form" id="join-form" method="post" action="">
+		<c:import url="/WEB-INF/views/include/menu.jsp"/>
+		<form class="join-form" id="join-form" method="post" action="${pageContext.request.contextPath}/user/join">
 			<label class="block-label" for="name">이름</label>
 			<input id="name"name="name" type="text" value="">
 			
@@ -28,7 +22,7 @@
 			<img id="img-checkemail" style="display: none;" src="${pageContext.request.contextPath}/assets/images/check.png">
 
 			<label class="block-label" for="password">패스워드</label>
-			<input id="password" name="password" type="password" />
+			<input id="password" name="passwd" type="password" />
 
 			<fieldset>
 				<legend>약관동의</legend>
